@@ -40,6 +40,7 @@
         ]
         const parentDom = document.getElementById('box');
         let color = 1;
+
         function show() {
             parentDom.innerHTML = '';
             for (let i = 0; i < 3; i++) {
@@ -53,19 +54,24 @@
                 }
             }
         }
+
         function move(x, y) {
             if (pattern[x][y]) {
                 return;
             }
             pattern[x][y] = color;
             show();
-            if (check()) {
+            if (check(pattern, color)) {
                 const winner = color === 2 ? '❌获胜' : '⭕️获胜';
                 alert(winner);
             }
             color = 3 - color;
+            if (willWin(pattern, color)) {
+                console.log(color ===2 ? '❌即将获胜' : '⭕️获胜');
+            }
         }
-        function check() {
+
+        function check(pattern, color) {
             for (let i = 0; i < 3; i++) {
                 let win = true;
                 for (let j = 0; j < 3; j++) {
@@ -83,8 +89,7 @@
                     }
                 }
                 if (win) return win;
-            }
-            {
+            } {
                 let win = true;
                 for (let i = 0; i < 3; i++) {
                     if (pattern[i][i] !== color) {
@@ -92,8 +97,7 @@
                     }
                 }
                 if (win) return win;
-            }
-            {
+            } {
                 let win = true;
                 for (let i = 0; i < 3; i++) {
                     if (pattern[i][2 - i] !== color) {
@@ -101,6 +105,24 @@
                     }
                 }
                 if (win) return win;
+            }
+            return false;
+        }
+
+        function clone(pattern) {
+            return JSON.parse(JSON.stringify(pattern));
+        }
+
+        function willWin(pattern, color) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j]) continue;
+                    const tmp = clone(pattern);
+                    tmp[i][j] = color;
+                    if (check(tmp, color)) {
+                        return true;
+                    }
+                }
             }
             return false;
         }
