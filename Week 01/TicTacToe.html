@@ -34,7 +34,7 @@
     <div id="box"></div>
     <script>
         const pattern = [
-            [2, 0, 0],
+            [0, 0, 2],
             [0, 1, 0],
             [0, 0, 0]
         ]
@@ -67,7 +67,7 @@
             }
             color = 3 - color;
             if (willWin(pattern, color)) {
-                console.log(color ===2 ? '❌即将获胜' : '⭕️获胜');
+                console.log(color === 2 ? '❌即将获胜' : '⭕️获胜');
             }
         }
 
@@ -120,13 +120,43 @@
                     const tmp = clone(pattern);
                     tmp[i][j] = color;
                     if (check(tmp, color)) {
-                        return true;
+                        return [j, i];
                     }
                 }
             }
-            return false;
+            return null;
         }
-        show();
+
+        function bestChoice(pattern, color) {
+            let p;
+            if (p = willWin(pattern, color)) {
+                return {
+                    point: p,
+                    result: 1
+                }
+            }
+            let result = -2;
+            let point = null;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j]) continue;
+                    const tmp = clone(pattern);
+                    tmp[i][j] = color;
+                    let r = bestChoice(tmp, 3 - color).result;
+
+                    if (-r > result) {
+                        result = -r;
+                        point = [j, i];
+                    }
+                }
+            }
+            return {
+                point,
+                result: point ? result : 0
+            }
+        }
+        show(pattern);
+        console.log(bestChoice(pattern, color))
     </script>
 </body>
 
