@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container {
+            width: 800px;
+            height: 800px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .block {
+            width: 8px;
+            height: 8px;
+            box-sizing: border-box;
+            border: 1px solid #fff;
+            background-color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <button onclick="localStorage['map'] = JSON.stringify(map)">save</button>
+    <script>
+        let map = localStorage['map'] ? JSON.parse(localStorage['map']) : Array(10000).fill(0);
+        const container = document.getElementById('container');
+        let mouseDown = false;
+        let clear = false;
+        for (let y = 0; y < 100; y++) {
+            for (let x = 0; x < 100; x++) {
+                let block = document.createElement('div');
+                block.classList.add('block');
+                if (map[100 * y + x]) {
+                    block.style.backgroundColor = 'black';
+                }
+                block.addEventListener('mousemove', () => {
+                    if (mouseDown) {
+                        if (clear) {
+                            block.style.backgroundColor = '';
+                            map[100 * y + x] = 0;
+                        } else {
+                            block.style.backgroundColor = 'black';
+                            map[100 * y + x] = 1;
+                        }
+                    }
+                })
+                container.appendChild(block);
+            }
+        }
+       
+        document.addEventListener('mousedown', e => {
+            mouseDown = true;
+            clear = (e.which === 3);
+        });
+        document.addEventListener('mouseup', () => mouseDown = false);
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+
+</html>
