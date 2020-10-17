@@ -29,7 +29,6 @@
     <script>
         let map = localStorage['map'] ? JSON.parse(localStorage['map']) : Array(10000).fill(0);
         const container = document.getElementById('container');
-        let mouseDown = false;
         let clear = false;
         for (let y = 0; y < 100; y++) {
             for (let x = 0; x < 100; x++) {
@@ -38,26 +37,37 @@
                 if (map[100 * y + x] === 1) {
                     block.style.backgroundColor = 'black';
                 }
-                block.addEventListener('mousemove', () => {
-                    if (mouseDown) {
-                        if (clear) {
-                            block.style.backgroundColor = '';
-                            map[100 * y + x] = 0;
-                        } else {
-                            block.style.backgroundColor = 'black';
-                            map[100 * y + x] = 1;
-                        }
-                    }
-                })
                 container.appendChild(block);
             }
         }
 
-        document.addEventListener('mousedown', e => {
-            mouseDown = true;
+        function mouseMove(e) {
+            e.preventDefault();
+            const bBox = container.getBoundingClientRect();
+            const dx = e.clientX - bBox.left;
+            const dy = e.clientY - bBox.top;
+            const xDiv = Math.trunc(dx / 8);
+            const yDiv = Math.trunc(dy / 8);
+            const index = 100 * yDiv + xDiv;
+            const block = e.target;
+            if (clear) {
+                block.style.backgroundColor = '';
+                map[index] = 0;
+            } else {
+                block.style.backgroundColor = 'black';
+                map[index] = 1;
+            }
+        }
+
+        function moveUp() {
+            document.body.removeEventListener('mousemove', mouseMove);
+            document.body.removeEventListener('mouseup', moveUp);
+        }
+        container.addEventListener('mousedown', (e) => {
             clear = (e.which === 3);
-        });
-        document.addEventListener('mouseup', () => mouseDown = false);
+            document.body.addEventListener('mousemove', mouseMove)
+            document.body.addEventListener('mouseup', moveUp)
+        })
         document.addEventListener('contextmenu', e => e.preventDefault());
 
         function sleep(t) {
