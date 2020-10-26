@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // AST 抽象语法树
+        // 四则运算是指加法、减法、乘法和除法四种运算。
+
+        var regexp = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)/g;
+        var dictionary = ['Number', 'Whitespace', 'LineTerminator', '*', '/', '+', '-'];
+
+        function tokenize(source) {
+            var result = null;
+            while (true) {
+                result = regexp.exec(source);
+                if (!result) break;
+                for (let i = 0; i <= dictionary.length; i++) {
+                    if (result[i]) {
+                        console.log(dictionary[i - 1], result[i], result)
+                    }
+                }
+
+            }
+        }
+        tokenize("1024 + 10 * 25");
+    </script>
+</body>
+
+</html>
