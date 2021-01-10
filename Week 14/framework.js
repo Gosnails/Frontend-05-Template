@@ -5,7 +5,6 @@ export function createElement(type, attributes, ...children) {
   } else {
     element = new type();
   }
-
   for (let name in attributes) {
     element.setAttribute(name, attributes[name]);
   }
@@ -20,7 +19,7 @@ export function createElement(type, attributes, ...children) {
 
 export class Component {
   constructor() {
-    this.root = this.render();
+    // this.root = this.render();
   }
   setAttribute(name, value) {
     this.root.setAttribute(name, value);
