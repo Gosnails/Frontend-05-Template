@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body oncontextmenu="event.preventDefault()">
+    <!-- <script src="./Week 15/gesture.js"></script> -->
+    <script type="module">
+        import { enableGesture} from './Week 15/gesture.js';
+        enableGesture(document.documentElement);
+        document.documentElement.addEventListener("tap", () => {
+            console.log("tap event trigger")
+        })
+        document.documentElement.addEventListener("press", () => {
+            console.log("press event trigger")
+        })
+        document.documentElement.addEventListener("pan", () => {
+            console.log("pan event trigger")
+        })
+        document.documentElement.addEventListener("flick", (event) => {
+            console.log(event, "flick event trigger")
+        })
+    </script>
+</body>
+
+</html>

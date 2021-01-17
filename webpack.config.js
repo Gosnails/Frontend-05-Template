@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./Week 14/main.js",
+  entry: "./Week 15/gesture.js",
   module: {
     rules: [
       {
